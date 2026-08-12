@@ -1,0 +1,1572 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ImagePros — Upscaler wallpaper & asset desain</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #121212;
+        --panel: #1a1917;
+        --panel2: #221f1c;
+        --panel3: #141312;
+        --border: #332e28;
+        --border-soft: #262320;
+        --text: #efe9e0;
+        --muted: #a89c8c;
+        --muted2: #7d7367;
+        --accent: #ff8a3d;
+        --accent-dim: #3a281a;
+        --accent-text: #ffb489;
+        --cyan: #4ad9c7;
+        --cyan-dim: #16302c;
+        --ok: #6fcf97;
+        --err: #ff6b6b;
+        --warn: #ffb84d;
+        --radius: 10px;
+        --radius-lg: 16px;
+        --font-display: "Space Grotesk", sans-serif;
+        --font-body: "Inter", -apple-system, sans-serif;
+        --font-mono: "IBM Plex Mono", monospace;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: radial-gradient(
+          ellipse 1200px 600px at 50% -10%,
+          #241d15 0%,
+          var(--bg) 55%
+        );
+        color: var(--text);
+        font-family: var(--font-body);
+        line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--accent-text);
+      }
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      header.top {
+        position: sticky;
+        top: 0;
+        z-index: 30;
+        backdrop-filter: blur(10px);
+        background: rgba(18, 18, 18, 0.82);
+        border-bottom: 1px solid var(--border-soft);
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 20px;
+        max-width: 980px;
+        margin: 0 auto;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-mark {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 2px solid var(--accent);
+        position: relative;
+        flex-shrink: 0;
+      }
+      .brand-mark::after {
+        content: "";
+        position: absolute;
+        inset: 7px;
+        border-radius: 50%;
+        background: var(--accent);
+      }
+      .brand-name {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 18px;
+        letter-spacing: 0.2px;
+      }
+      .brand-tag {
+        font-size: 11px;
+        color: var(--muted2);
+        font-family: var(--font-mono);
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+      }
+      .net-indicator {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        padding: 5px 10px;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .net-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--ok);
+      }
+      .net-indicator.off .net-dot {
+        background: var(--err);
+      }
+      .net-indicator.off {
+        color: var(--err);
+        border-color: #4a2323;
+      }
+
+      .hero {
+        padding: 56px 0 36px;
+      }
+      .hero h1 {
+        font-family: var(--font-display);
+        font-size: clamp(28px, 5vw, 44px);
+        font-weight: 700;
+        margin: 0 0 14px;
+        line-height: 1.1;
+        max-width: 640px;
+      }
+      .hero h1 span {
+        color: var(--accent);
+      }
+      .hero p {
+        color: var(--muted);
+        font-size: 15px;
+        max-width: 560px;
+        margin: 0;
+      }
+
+      .step {
+        margin: 0 0 22px;
+      }
+      .step-head {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+      .step-num {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--accent);
+        border: 1px solid var(--accent-dim);
+        background: var(--accent-dim);
+        padding: 3px 8px;
+        border-radius: 6px;
+        letter-spacing: 0.5px;
+      }
+      .step-title {
+        font-family: var(--font-display);
+        font-size: 17px;
+        font-weight: 600;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius-lg);
+        padding: 22px 24px;
+      }
+
+      .btnrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        font-family: var(--font-body);
+        font-size: 12.5px;
+        padding: 8px 14px;
+        border-radius: 20px;
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        color: var(--text);
+        cursor: pointer;
+        transition:
+          border-color 0.15s,
+          transform 0.1s;
+      }
+      .chip:hover {
+        border-color: var(--accent);
+      }
+      .chip:active {
+        transform: scale(0.97);
+      }
+      .chip.on {
+        background: var(--accent-dim);
+        border-color: var(--accent);
+        color: var(--accent-text);
+      }
+      .chip.cy.on {
+        background: var(--cyan-dim);
+        border-color: var(--cyan);
+        color: var(--cyan);
+      }
+
+      button.pri {
+        font-family: var(--font-body);
+        font-weight: 600;
+        font-size: 13.5px;
+        background: var(--accent);
+        color: #1a1310;
+        border: none;
+        padding: 11px 20px;
+        border-radius: var(--radius);
+        cursor: pointer;
+        transition:
+          filter 0.15s,
+          transform 0.1s;
+      }
+      button.pri:hover {
+        filter: brightness(1.08);
+      }
+      button.pri:active {
+        transform: scale(0.98);
+      }
+      button.pri:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        filter: none;
+      }
+      button.sec {
+        font-family: var(--font-body);
+        font-weight: 500;
+        font-size: 13.5px;
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+        padding: 10px 18px;
+        border-radius: var(--radius);
+        cursor: pointer;
+      }
+      button.sec:hover {
+        border-color: var(--muted2);
+      }
+
+      .tabs {
+        display: inline-flex;
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 3px;
+        gap: 2px;
+      }
+      .tabs button {
+        font-family: var(--font-body);
+        font-size: 12.5px;
+        font-weight: 500;
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        padding: 7px 14px;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+      .tabs button.active {
+        background: var(--panel3);
+        color: var(--text);
+        box-shadow: 0 0 0 1px var(--border);
+      }
+
+      .field {
+        margin-top: 16px;
+      }
+      .field label {
+        display: block;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 7px;
+        font-family: var(--font-mono);
+        letter-spacing: 0.3px;
+      }
+      input[type="text"],
+      input[type="url"],
+      input[type="password"],
+      select,
+      input[type="number"] {
+        width: 100%;
+        background: var(--panel3);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 10px 12px;
+        border-radius: var(--radius);
+        font-size: 13.5px;
+        font-family: var(--font-body);
+      }
+      input:focus,
+      select:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+      input[type="file"] {
+        display: block;
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      .hint {
+        font-size: 12px;
+        color: var(--muted2);
+        margin-top: 8px;
+        line-height: 1.6;
+      }
+
+      .gallery-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin: 16px 0 14px;
+      }
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+        gap: 8px;
+      }
+      .gthumb {
+        aspect-ratio: 1;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        cursor: pointer;
+        position: relative;
+        background: var(--panel2);
+      }
+      .gthumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.2s;
+      }
+      .gthumb:hover img {
+        transform: scale(1.06);
+      }
+      .gthumb.selected {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px var(--accent-dim);
+      }
+      .gthumb.selected::after {
+        content: "✓";
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        width: 18px;
+        height: 18px;
+        background: var(--accent);
+        color: #1a1310;
+        border-radius: 50%;
+        font-size: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+      }
+
+      /* signature film-strip progress meter */
+      .meter {
+        margin-top: 16px;
+        display: none;
+      }
+      .meter.show {
+        display: block;
+      }
+      .meter-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        margin-bottom: 6px;
+      }
+      .meter-label {
+        font-size: 12px;
+        color: var(--muted);
+        font-family: var(--font-mono);
+      }
+      .meter-pct {
+        font-size: 13px;
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-weight: 600;
+      }
+      .meter-track {
+        height: 14px;
+        border-radius: 7px;
+        background: var(--panel3);
+        border: 1px solid var(--border);
+        position: relative;
+        overflow: hidden;
+      }
+      .meter-fill {
+        height: 100%;
+        background: linear-gradient(90deg, var(--accent), #ffb489);
+        width: 0%;
+        transition: width 0.18s ease;
+        position: relative;
+      }
+      .meter-ticks {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        pointer-events: none;
+      }
+      .meter-ticks span {
+        flex: 1;
+        border-right: 1px solid rgba(0, 0, 0, 0.35);
+      }
+      .meter-ticks span:last-child {
+        border-right: none;
+      }
+      .meter-status {
+        font-size: 12px;
+        margin-top: 7px;
+        font-family: var(--font-mono);
+      }
+      .meter-status.ok {
+        color: var(--ok);
+      }
+      .meter-status.err {
+        color: var(--err);
+      }
+      .meter-status.busy {
+        color: var(--warn);
+      }
+
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+      @media (max-width: 640px) {
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .method-panel {
+        display: none;
+        margin-top: 18px;
+      }
+      .method-panel.active {
+        display: block;
+      }
+
+      .presetgrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .preset {
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 10px 12px;
+        cursor: pointer;
+        text-align: left;
+      }
+      .preset:hover {
+        border-color: var(--accent);
+      }
+      .preset.on {
+        border-color: var(--accent);
+        background: var(--accent-dim);
+      }
+      .preset b {
+        display: block;
+        font-size: 12.5px;
+        font-weight: 600;
+      }
+      .preset small {
+        font-family: var(--font-mono);
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .slider-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      input[type="range"] {
+        flex: 1;
+        accent-color: var(--accent);
+      }
+      .slider-val {
+        font-family: var(--font-mono);
+        font-size: 12.5px;
+        color: var(--accent-text);
+        min-width: 34px;
+        text-align: right;
+      }
+
+      .preview-label {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--muted);
+        margin-bottom: 8px;
+        font-family: var(--font-mono);
+      }
+      .preview-box {
+        background: var(--panel3);
+        border: 1px dashed var(--border);
+        border-radius: var(--radius);
+        min-height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .preview-box img {
+        max-width: 100%;
+        max-height: 320px;
+        display: block;
+      }
+      .preview-box .ph {
+        color: var(--muted2);
+        font-size: 12.5px;
+        padding: 20px;
+        text-align: center;
+      }
+      .badge {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--accent-text);
+      }
+
+      footer {
+        margin-top: 60px;
+        border-top: 1px solid var(--border-soft);
+        padding: 40px 0 30px;
+        background: var(--panel3);
+      }
+      .foot-grid {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr 1fr;
+        gap: 32px;
+      }
+      @media (max-width: 640px) {
+        .foot-grid {
+          grid-template-columns: 1fr;
+          gap: 24px;
+        }
+      }
+      .foot-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .foot-brand .brand-name {
+        font-size: 15px;
+      }
+      footer p {
+        color: var(--muted2);
+        font-size: 12.5px;
+        max-width: 320px;
+        margin: 0;
+      }
+      footer h4 {
+        font-family: var(--font-mono);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        color: var(--muted);
+        margin: 0 0 12px;
+      }
+      footer ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+      }
+      footer a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 13px;
+      }
+      footer a:hover {
+        color: var(--accent-text);
+      }
+      .foot-bottom {
+        max-width: 980px;
+        margin: 32px auto 0;
+        padding: 18px 20px 0;
+        border-top: 1px solid var(--border-soft);
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+        font-size: 11.5px;
+        color: var(--muted2);
+        font-family: var(--font-mono);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="topbar">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <div>
+            <div class="brand-name">ImagePros</div>
+            <div class="brand-tag">Upscale &amp; asset lab</div>
+          </div>
+        </div>
+        <div class="net-indicator" id="netIndicator">
+          <span class="net-dot"></span><span id="netText">online</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <section class="hero">
+        <h1>
+          Perjelas gambar jadi <span>wallpaper</span> &amp; asset desain siap
+          pakai.
+        </h1>
+        <p>
+          Cari sumber, unggah, perbesar resolusinya dengan penajaman otomatis
+          atau AI super-resolution, lalu ekspor pas ukuran layar HP, monitor,
+          atau kanvas desainmu.
+        </p>
+      </section>
+
+      <div class="step">
+        <div class="step-head">
+          <span class="step-num">01</span
+          ><span class="step-title">Cari gambar sumber</span>
+        </div>
+        <div class="panel">
+          <div class="btnrow">
+            <input
+              type="text"
+              id="searchQuery"
+              placeholder="cyberpunk city 4k, texture kayu, ilustrasi karakter..."
+              style="flex: 1; min-width: 220px"
+            />
+          </div>
+          <div class="btnrow" style="margin-top: 10px">
+            <button class="chip" data-site="pinterest">Pinterest</button>
+            <button class="chip" data-site="pixiv">Pixiv</button>
+            <button class="chip" data-site="google">Google Images</button>
+            <button class="chip" data-site="unsplash">Unsplash</button>
+            <button class="chip" data-site="pexels">Pexels</button>
+          </div>
+          <p class="hint">
+            Setiap tombol membuka tab pencarian baru di situs tersebut — pilih &
+            simpan gambar secara manual (perhatikan lisensi/hak ciptanya), lalu
+            unggah di langkah 02. Ini lebih aman daripada scraping otomatis yang
+            diblokir/melanggar aturan situs-situs tersebut.
+          </p>
+
+          <div class="gallery-actions">
+            <button class="pri" id="btnRandomGallery">
+              Ambil 25 gambar acak
+            </button>
+            <span class="hint" style="margin: 0"
+              >Sumber terbuka &amp; bebas dipakai (Picsum / Unsplash Source) —
+              klik gambar untuk menjadikannya sumber.</span
+            >
+          </div>
+          <div class="gallery-grid" id="galleryGrid"></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-head">
+          <span class="step-num">02</span
+          ><span class="step-title">Muat gambar</span>
+        </div>
+        <div class="panel">
+          <div class="tabs">
+            <button data-tab="upload" class="active">Upload file</button>
+            <button data-tab="url">Paste URL</button>
+          </div>
+          <div id="tab-upload" class="field">
+            <input type="file" id="fileInput" accept="image/*" />
+          </div>
+          <div id="tab-url" class="field" style="display: none">
+            <input
+              type="url"
+              id="urlInput"
+              placeholder="https://contoh.com/gambar.jpg"
+            />
+            <div style="margin-top: 10px">
+              <button class="sec" id="btnLoadUrl">Muat dari URL</button>
+            </div>
+            <p class="hint">
+              Jika WiFi terputus saat mengunduh, progres tidak hilang — begitu
+              koneksi kembali, unduhan otomatis dilanjutkan dari byte terakhir
+              (selama server sumber mendukung permintaan sebagian / Range, umum
+              di kebanyakan CDN gambar).
+            </p>
+          </div>
+          <div class="meter" id="loadMeter">
+            <div class="meter-top">
+              <span class="meter-label">memuat gambar</span
+              ><span class="meter-pct" id="loadPct">0%</span>
+            </div>
+            <div class="meter-track">
+              <div class="meter-fill" id="loadFill">
+                <div class="meter-ticks">
+                  <span></span><span></span><span></span><span></span
+                  ><span></span><span></span><span></span><span></span
+                  ><span></span><span></span>
+                </div>
+              </div>
+            </div>
+            <div class="meter-status" id="loadStatus"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-head">
+          <span class="step-num">03</span
+          ><span class="step-title">Perjelas &amp; perbesar</span>
+        </div>
+        <div class="panel">
+          <div class="tabs">
+            <button data-method="canvas" class="active">
+              Canvas (offline)
+            </button>
+            <button data-method="ai">AI super-resolution</button>
+          </div>
+
+          <div class="field">
+            <label>Mode ukuran keluaran</label>
+            <div class="tabs">
+              <button data-sizemode="multiplier" class="active">
+                Kelipatan
+              </button>
+              <button data-sizemode="target">Ukuran target</button>
+            </div>
+          </div>
+
+          <div id="sizemode-multiplier" class="field">
+            <label>Faktor perbesaran</label>
+            <select id="scaleFactor">
+              <option value="2">2x</option>
+              <option value="4" selected>4x</option>
+              <option value="6">6x</option>
+              <option value="8">8x</option>
+            </select>
+          </div>
+
+          <div id="sizemode-target" class="field" style="display: none">
+            <label>Preset layar</label>
+            <div class="presetgrid" id="presetGrid"></div>
+            <div class="grid2" style="margin-top: 12px">
+              <div>
+                <label>Lebar custom (px)</label
+                ><input type="number" id="customW" placeholder="1920" />
+              </div>
+              <div>
+                <label>Tinggi custom (px)</label
+                ><input type="number" id="customH" placeholder="1080" />
+              </div>
+            </div>
+            <p class="hint">
+              Gambar akan dipotong-pas (center-crop) mengikuti rasio target
+              setelah diperbesar, sehingga ukuran akhir persis sesuai angka di
+              atas.
+            </p>
+          </div>
+
+          <div class="field">
+            <label>Penajaman (unsharp mask)</label>
+            <div class="slider-row">
+              <input
+                type="range"
+                id="sharpenAmt"
+                min="0"
+                max="100"
+                value="45"
+              />
+              <span class="slider-val" id="sharpenVal">45</span>
+            </div>
+          </div>
+
+          <div id="method-canvas" class="method-panel active">
+            <p class="hint">
+              Menskalakan gambar bertahap (multi-pass) lalu menajamkan tepi.
+              Tidak menambah detail baru seperti AI, tapi cepat, gratis, dan
+              berjalan offline sepenuhnya di browser.
+            </p>
+            <div style="margin-top: 12px">
+              <button class="pri" id="btnCanvasUpscale">
+                Proses dengan Canvas
+              </button>
+            </div>
+          </div>
+
+          <div id="method-ai" class="method-panel">
+            <div class="field" style="margin-top: 0">
+              <label>API key DeepAI (milik kamu sendiri)</label>
+              <input
+                type="password"
+                id="apiKey"
+                placeholder="paste API key di sini"
+              />
+              <p class="hint">
+                Key hanya dipakai di browser kamu saat ini, tidak disimpan.
+                Daftar gratis di deepai.org untuk mendapat key & kuota. Jika
+                koneksi terputus saat mengunggah, permintaan otomatis dicoba
+                ulang saat WiFi kembali.
+              </p>
+            </div>
+            <div style="margin-top: 12px">
+              <button class="pri" id="btnAiUpscale">Proses dengan AI</button>
+            </div>
+          </div>
+
+          <div class="meter" id="procMeter">
+            <div class="meter-top">
+              <span class="meter-label">memproses</span
+              ><span class="meter-pct" id="procPct">0%</span>
+            </div>
+            <div class="meter-track">
+              <div class="meter-fill" id="procFill">
+                <div class="meter-ticks">
+                  <span></span><span></span><span></span><span></span
+                  ><span></span><span></span><span></span><span></span
+                  ><span></span><span></span>
+                </div>
+              </div>
+            </div>
+            <div class="meter-status" id="procStatus"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-head">
+          <span class="step-num">04</span><span class="step-title">Hasil</span>
+        </div>
+        <div class="panel">
+          <div class="grid2">
+            <div>
+              <div class="preview-label">
+                <span>Sebelum</span><span class="badge" id="beforeMeta"></span>
+              </div>
+              <div class="preview-box" id="beforeBox">
+                <div class="ph">Belum ada gambar</div>
+              </div>
+            </div>
+            <div>
+              <div class="preview-label">
+                <span>Sesudah</span><span class="badge" id="afterMeta"></span>
+              </div>
+              <div class="preview-box" id="afterBox">
+                <div class="ph">Hasil muncul di sini</div>
+              </div>
+            </div>
+          </div>
+          <div style="margin-top: 16px">
+            <button class="sec" id="btnDownload" disabled>
+              Download hasil (PNG)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container foot-grid">
+        <div>
+          <div class="foot-brand">
+            <div class="brand-mark"></div>
+            <span class="brand-name">ImagePros</span>
+          </div>
+          <p>
+            Alat untuk memperjelas dan memperbesar gambar jadi wallpaper atau
+            asset desain (game, UI, banner, ikon) — langsung di browser, tanpa
+            upload ke server pihak ketiga kecuali kamu sendiri memilih mode AI.
+          </p>
+        </div>
+        <div>
+          <h4>Sumber gambar</h4>
+          <ul>
+            <li>
+              <a href="https://www.pinterest.com" target="_blank" rel="noopener"
+                >Pinterest</a
+              >
+            </li>
+            <li>
+              <a href="https://www.pixiv.net" target="_blank" rel="noopener"
+                >Pixiv</a
+              >
+            </li>
+            <li>
+              <a href="https://unsplash.com" target="_blank" rel="noopener"
+                >Unsplash</a
+              >
+            </li>
+            <li>
+              <a href="https://www.pexels.com" target="_blank" rel="noopener"
+                >Pexels</a
+              >
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h4>Catatan</h4>
+          <ul>
+            <li style="color: var(--muted2); font-size: 12.5px">
+              Periksa lisensi tiap gambar sebelum dipakai komersial.
+            </li>
+            <li style="color: var(--muted2); font-size: 12.5px">
+              Mode AI mengirim gambar ke API pihak ketiga (DeepAI) memakai key
+              milikmu.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>ImagePros — dibuat untuk kerja desain pribadi</span>
+        <span id="yearNow"></span>
+      </div>
+    </footer>
+
+    <script>
+      document.getElementById("yearNow").textContent = new Date().getFullYear();
+
+      let sourceImg = null;
+      let resultCanvas = null;
+      let sizeMode = "multiplier";
+      let targetW = 1920,
+        targetH = 1080;
+
+      /* ---------- network indicator ---------- */
+      function updateNet() {
+        const el = document.getElementById("netIndicator");
+        const txt = document.getElementById("netText");
+        if (navigator.onLine) {
+          el.classList.remove("off");
+          txt.textContent = "online";
+        } else {
+          el.classList.add("off");
+          txt.textContent = "offline";
+        }
+      }
+      window.addEventListener("online", updateNet);
+      window.addEventListener("offline", updateNet);
+      updateNet();
+
+      /* ---------- tabs ---------- */
+      document.querySelectorAll(".tabs button[data-tab]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".tabs button[data-tab]")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const t = btn.dataset.tab;
+          document.getElementById("tab-upload").style.display =
+            t === "upload" ? "block" : "none";
+          document.getElementById("tab-url").style.display =
+            t === "url" ? "block" : "none";
+        });
+      });
+      document.querySelectorAll(".tabs button[data-method]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".tabs button[data-method]")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          const m = btn.dataset.method;
+          document
+            .getElementById("method-canvas")
+            .classList.toggle("active", m === "canvas");
+          document
+            .getElementById("method-ai")
+            .classList.toggle("active", m === "ai");
+        });
+      });
+      document
+        .querySelectorAll(".tabs button[data-sizemode]")
+        .forEach((btn) => {
+          btn.addEventListener("click", () => {
+            document
+              .querySelectorAll(".tabs button[data-sizemode]")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            sizeMode = btn.dataset.sizemode;
+            document.getElementById("sizemode-multiplier").style.display =
+              sizeMode === "multiplier" ? "block" : "none";
+            document.getElementById("sizemode-target").style.display =
+              sizeMode === "target" ? "block" : "none";
+          });
+        });
+      document.getElementById("sharpenAmt").addEventListener("input", (e) => {
+        document.getElementById("sharpenVal").textContent = e.target.value;
+      });
+
+      /* ---------- quick search buttons ---------- */
+      const siteUrls = {
+        pinterest: (q) =>
+          "https://www.pinterest.com/search/pins/?q=" + encodeURIComponent(q),
+        pixiv: (q) =>
+          "https://www.pixiv.net/en/tags/" +
+          encodeURIComponent(q) +
+          "/artworks",
+        google: (q) =>
+          "https://www.google.com/search?tbm=isch&tbs=isz:l&q=" +
+          encodeURIComponent(q),
+        unsplash: (q) =>
+          "https://unsplash.com/s/photos/" + encodeURIComponent(q),
+        pexels: (q) =>
+          "https://www.pexels.com/search/" + encodeURIComponent(q) + "/",
+      };
+      document.querySelectorAll(".chip[data-site]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const q = document.getElementById("searchQuery").value.trim();
+          if (!q) {
+            document.getElementById("searchQuery").focus();
+            return;
+          }
+          window.open(siteUrls[btn.dataset.site](q), "_blank");
+        });
+      });
+
+      /* ---------- random gallery (legal open sources) ---------- */
+      document
+        .getElementById("btnRandomGallery")
+        .addEventListener("click", () => {
+          const grid = document.getElementById("galleryGrid");
+          grid.innerHTML = "";
+          const seedBase = Date.now();
+          for (let i = 0; i < 25; i++) {
+            const seed = seedBase + i;
+            const thumb = document.createElement("div");
+            thumb.className = "gthumb";
+            const img = document.createElement("img");
+            img.crossOrigin = "anonymous";
+            img.loading = "lazy";
+            img.src = "https://picsum.photos/seed/" + seed + "/400/400";
+            img.dataset.full =
+              "https://picsum.photos/seed/" + seed + "/1600/1600";
+            thumb.appendChild(img);
+            thumb.addEventListener("click", () => {
+              document
+                .querySelectorAll(".gthumb.selected")
+                .forEach((t) => t.classList.remove("selected"));
+              thumb.classList.add("selected");
+              const full = new Image();
+              full.crossOrigin = "anonymous";
+              full.onload = () => {
+                sourceImg = full;
+                showBefore(full);
+              };
+              full.src = img.dataset.full;
+            });
+            grid.appendChild(thumb);
+          }
+        });
+
+      /* ---------- preview ---------- */
+      function showBefore(img) {
+        const box = document.getElementById("beforeBox");
+        box.innerHTML = "";
+        const clone = img.cloneNode();
+        box.appendChild(clone);
+        document.getElementById("beforeMeta").textContent =
+          img.naturalWidth + "×" + img.naturalHeight;
+      }
+      function showAfter(canvas) {
+        const box = document.getElementById("afterBox");
+        box.innerHTML = "";
+        const out = document.createElement("img");
+        out.src = canvas.toDataURL("image/png");
+        box.appendChild(out);
+        document.getElementById("afterMeta").textContent =
+          canvas.width + "×" + canvas.height;
+        document.getElementById("btnDownload").disabled = false;
+      }
+
+      /* ---------- meter helpers ---------- */
+      function meterShow(id) {
+        document.getElementById(id).classList.add("show");
+      }
+      function meterSet(prefix, pct, status, cls) {
+        document.getElementById(prefix + "Fill").style.width =
+          Math.max(0, Math.min(100, pct)) + "%";
+        document.getElementById(prefix + "Pct").textContent =
+          Math.round(pct) + "%";
+        const s = document.getElementById(prefix + "Status");
+        s.textContent = status || "";
+        s.className = "meter-status" + (cls ? " " + cls : "");
+      }
+
+      /* ---------- file upload (real progress via FileReader) ---------- */
+      document.getElementById("fileInput").addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        meterShow("loadMeter");
+        meterSet("load", 0, "membaca file...", "busy");
+        const reader = new FileReader();
+        reader.onprogress = (ev) => {
+          if (ev.lengthComputable)
+            meterSet(
+              "load",
+              (ev.loaded / ev.total) * 100,
+              "membaca file...",
+              "busy",
+            );
+        };
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            sourceImg = img;
+            showBefore(img);
+            meterSet(
+              "load",
+              100,
+              "siap: " + img.naturalWidth + "×" + img.naturalHeight + " px",
+              "ok",
+            );
+          };
+          img.onerror = () =>
+            meterSet("load", 0, "gagal membaca gambar", "err");
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      /* ---------- resumable URL loader ---------- */
+      function waitForOnline() {
+        return new Promise((resolve) => {
+          if (navigator.onLine) {
+            setTimeout(resolve, 1200);
+            return;
+          }
+          const h = () => {
+            window.removeEventListener("online", h);
+            resolve();
+          };
+          window.addEventListener("online", h);
+        });
+      }
+      async function fetchResumable(url, onProgress) {
+        let received = 0,
+          total = null,
+          chunks = [];
+        let attempt = 0;
+        while (true) {
+          attempt++;
+          try {
+            const headers =
+              received > 0 ? { Range: "bytes=" + received + "-" } : {};
+            const resp = await fetch(url, { headers });
+            if (!resp.ok && resp.status !== 206)
+              throw new Error("status " + resp.status);
+            if (total === null) {
+              const cr = resp.headers.get("content-range");
+              const cl = resp.headers.get("content-length");
+              if (cr && cr.includes("/"))
+                total = parseInt(cr.split("/")[1], 10);
+              else if (cl) total = received + parseInt(cl, 10);
+            }
+            const reader = resp.body.getReader();
+            while (true) {
+              const { done, value } = await reader.read();
+              if (done) break;
+              chunks.push(value);
+              received += value.length;
+              onProgress(received, total, "busy");
+            }
+            break;
+          } catch (err) {
+            onProgress(received, total, "offline");
+            await waitForOnline();
+            onProgress(received, total, "busy");
+          }
+        }
+        return new Blob(chunks);
+      }
+      document
+        .getElementById("btnLoadUrl")
+        .addEventListener("click", async () => {
+          const url = document.getElementById("urlInput").value.trim();
+          if (!url) return;
+          meterShow("loadMeter");
+          meterSet("load", 0, "menghubungkan...", "busy");
+          try {
+            const blob = await fetchResumable(url, (received, total, state) => {
+              const pct = total ? (received / total) * 100 : 0;
+              if (state === "offline") {
+                meterSet(
+                  "load",
+                  pct,
+                  "koneksi terputus — menunggu WiFi kembali, progres tersimpan (" +
+                    Math.round(pct) +
+                    "%)...",
+                  "err",
+                );
+              } else {
+                meterSet(
+                  "load",
+                  total ? pct : 0,
+                  total
+                    ? "mengunduh..."
+                    : "mengunduh (ukuran tidak diketahui)...",
+                  "busy",
+                );
+              }
+            });
+            const objUrl = URL.createObjectURL(blob);
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = () => {
+              sourceImg = img;
+              showBefore(img);
+              meterSet(
+                "load",
+                100,
+                "siap: " + img.naturalWidth + "×" + img.naturalHeight + " px",
+                "ok",
+              );
+            };
+            img.onerror = () =>
+              meterSet(
+                "load",
+                0,
+                "file terunduh tapi bukan gambar valid (kemungkinan situs memblokir CORS)",
+                "err",
+              );
+            img.src = objUrl;
+          } catch (err) {
+            meterSet("load", 0, "gagal memuat: " + err.message, "err");
+          }
+        });
+
+      /* ---------- size presets ---------- */
+      const presets = [
+        { label: "HP — FHD+", w: 1080, h: 1920 },
+        { label: "HP — QHD+", w: 1440, h: 3120 },
+        { label: "HP — iPhone", w: 1170, h: 2532 },
+        { label: "Monitor — FHD", w: 1920, h: 1080 },
+        { label: "Monitor — QHD", w: 2560, h: 1440 },
+        { label: "Monitor — 4K UHD", w: 3840, h: 2160 },
+        { label: "Ikon / asset persegi", w: 1024, h: 1024 },
+        { label: "Banner web lebar", w: 1920, h: 640 },
+      ];
+      const presetGrid = document.getElementById("presetGrid");
+      presets.forEach((p) => {
+        const b = document.createElement("button");
+        b.className = "preset";
+        b.innerHTML =
+          "<b>" + p.label + "</b><small>" + p.w + "×" + p.h + "</small>";
+        b.addEventListener("click", () => {
+          document
+            .querySelectorAll(".preset.on")
+            .forEach((x) => x.classList.remove("on"));
+          b.classList.add("on");
+          targetW = p.w;
+          targetH = p.h;
+          document.getElementById("customW").value = p.w;
+          document.getElementById("customH").value = p.h;
+        });
+        presetGrid.appendChild(b);
+      });
+      document
+        .getElementById("customW")
+        .addEventListener(
+          "input",
+          (e) => (targetW = parseInt(e.target.value, 10) || targetW),
+        );
+      document
+        .getElementById("customH")
+        .addEventListener(
+          "input",
+          (e) => (targetH = parseInt(e.target.value, 10) || targetH),
+        );
+
+      /* ---------- canvas upscale (async, progress per pass) ---------- */
+      function unsharpMask(ctx, w, h, amount) {
+        if (amount <= 0) return;
+        const strength = amount / 100;
+        const src = ctx.getImageData(0, 0, w, h);
+        const data = src.data;
+        const copy = new Uint8ClampedArray(data);
+        const kernel = [0, -1, 0, -1, 5, -1, 0, -1, 0];
+        const idx = (x, y) => (y * w + x) * 4;
+        for (let y = 1; y < h - 1; y++) {
+          for (let x = 1; x < w - 1; x++) {
+            for (let c = 0; c < 3; c++) {
+              let sum = 0,
+                k = 0;
+              for (let ky = -1; ky <= 1; ky++)
+                for (let kx = -1; kx <= 1; kx++)
+                  sum += copy[idx(x + kx, y + ky) + c] * kernel[k++];
+              const orig = copy[idx(x, y) + c];
+              data[idx(x, y) + c] = orig + (sum - orig) * strength;
+            }
+          }
+        }
+        ctx.putImageData(src, 0, 0);
+      }
+      function nextFrame() {
+        return new Promise((res) => requestAnimationFrame(res));
+      }
+
+      async function canvasProcess(img, opts) {
+        let curCanvas = document.createElement("canvas");
+        curCanvas.width = img.naturalWidth;
+        curCanvas.height = img.naturalHeight;
+        curCanvas.getContext("2d").drawImage(img, 0, 0);
+
+        let passes = [];
+        if (opts.mode === "multiplier") {
+          let remaining = opts.factor;
+          while (remaining > 1) {
+            const step = remaining >= 2 ? 2 : remaining;
+            passes.push(step);
+            remaining /= step;
+          }
+        } else {
+          const coverScale = Math.max(
+            opts.w / curCanvas.width,
+            opts.h / curCanvas.height,
+          );
+          let remaining = Math.max(coverScale, 1);
+          while (remaining > 1.001) {
+            const step = remaining >= 2 ? 2 : remaining;
+            passes.push(step);
+            remaining /= step;
+          }
+        }
+        const totalSteps = passes.length + 1;
+        let doneSteps = 0;
+
+        for (const step of passes) {
+          const next = document.createElement("canvas");
+          next.width = Math.round(curCanvas.width * step);
+          next.height = Math.round(curCanvas.height * step);
+          const nctx = next.getContext("2d");
+          nctx.imageSmoothingEnabled = true;
+          nctx.imageSmoothingQuality = "high";
+          nctx.drawImage(curCanvas, 0, 0, next.width, next.height);
+          curCanvas = next;
+          doneSteps++;
+          meterSet(
+            "proc",
+            (doneSteps / totalSteps) * 90,
+            "memperbesar (langkah " + doneSteps + "/" + passes.length + ")...",
+            "busy",
+          );
+          await nextFrame();
+        }
+
+        if (opts.mode === "target") {
+          const cropCanvas = document.createElement("canvas");
+          cropCanvas.width = opts.w;
+          cropCanvas.height = opts.h;
+          const cctx = cropCanvas.getContext("2d");
+          const sx = (curCanvas.width - opts.w) / 2;
+          const sy = (curCanvas.height - opts.h) / 2;
+          cctx.drawImage(
+            curCanvas,
+            Math.max(0, sx),
+            Math.max(0, sy),
+            opts.w,
+            opts.h,
+            0,
+            0,
+            opts.w,
+            opts.h,
+          );
+          curCanvas = cropCanvas;
+        }
+
+        meterSet("proc", 92, "menajamkan detail...", "busy");
+        await nextFrame();
+        unsharpMask(
+          curCanvas.getContext("2d"),
+          curCanvas.width,
+          curCanvas.height,
+          opts.sharpen,
+        );
+        meterSet(
+          "proc",
+          100,
+          "selesai: " + curCanvas.width + "×" + curCanvas.height + " px",
+          "ok",
+        );
+        return curCanvas;
+      }
+
+      document
+        .getElementById("btnCanvasUpscale")
+        .addEventListener("click", async () => {
+          if (!sourceImg) {
+            meterShow("procMeter");
+            meterSet("proc", 0, "muat gambar dulu di langkah 02", "err");
+            return;
+          }
+          meterShow("procMeter");
+          meterSet("proc", 2, "memulai...", "busy");
+          await nextFrame();
+          const sharpen = parseInt(
+            document.getElementById("sharpenAmt").value,
+            10,
+          );
+          const opts =
+            sizeMode === "multiplier"
+              ? {
+                  mode: "multiplier",
+                  factor: parseInt(
+                    document.getElementById("scaleFactor").value,
+                    10,
+                  ),
+                  sharpen,
+                }
+              : { mode: "target", w: targetW, h: targetH, sharpen };
+          try {
+            resultCanvas = await canvasProcess(sourceImg, opts);
+            showAfter(resultCanvas);
+          } catch (err) {
+            meterSet("proc", 0, "gagal: " + err.message, "err");
+          }
+        });
+
+      /* ---------- AI upscale (XHR for progress + auto-retry on reconnect) ---------- */
+      function xhrUpload(url, formData, headers, onProgress) {
+        return new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", url);
+          Object.entries(headers).forEach(([k, v]) =>
+            xhr.setRequestHeader(k, v),
+          );
+          xhr.upload.onprogress = (e) => {
+            if (e.lengthComputable)
+              onProgress((e.loaded / e.total) * 70, "busy");
+          };
+          xhr.onload = () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              onProgress(85, "busy");
+              try {
+                resolve(JSON.parse(xhr.responseText));
+              } catch (e) {
+                reject(new Error("respons server tidak valid"));
+              }
+            } else reject(new Error("status " + xhr.status));
+          };
+          xhr.onerror = () => reject(new Error("network"));
+          xhr.send(formData);
+        });
+      }
+      async function aiUpscaleWithRetry(url, formData, headers, onProgress) {
+        while (true) {
+          try {
+            return await xhrUpload(url, formData, headers, onProgress);
+          } catch (err) {
+            onProgress(0, "offline");
+            await waitForOnline();
+            onProgress(0, "busy");
+          }
+        }
+      }
+      document
+        .getElementById("btnAiUpscale")
+        .addEventListener("click", async () => {
+          const key = document.getElementById("apiKey").value.trim();
+          meterShow("procMeter");
+          if (!sourceImg) {
+            meterSet("proc", 0, "muat gambar dulu di langkah 02", "err");
+            return;
+          }
+          if (!key) {
+            meterSet("proc", 0, "masukkan API key DeepAI dulu", "err");
+            return;
+          }
+
+          meterSet("proc", 1, "menyiapkan gambar...", "busy");
+          const tmp = document.createElement("canvas");
+          tmp.width = sourceImg.naturalWidth;
+          tmp.height = sourceImg.naturalHeight;
+          tmp.getContext("2d").drawImage(sourceImg, 0, 0);
+          const blob = await new Promise((res) => tmp.toBlob(res, "image/png"));
+          const form = new FormData();
+          form.append("image", blob, "source.png");
+
+          try {
+            const data = await aiUpscaleWithRetry(
+              "https://api.deepai.org/api/torch-srgan",
+              form,
+              { "api-key": key },
+              (pct, state) => {
+                if (state === "offline")
+                  meterSet(
+                    "proc",
+                    pct,
+                    "koneksi terputus — akan dicoba ulang otomatis saat WiFi kembali...",
+                    "err",
+                  );
+                else
+                  meterSet(
+                    "proc",
+                    pct,
+                    "mengunggah & memproses di server AI...",
+                    "busy",
+                  );
+              },
+            );
+            if (!data.output_url)
+              throw new Error(data.err || "tidak ada output_url");
+            meterSet("proc", 90, "mengunduh hasil...", "busy");
+            const outImg = new Image();
+            outImg.crossOrigin = "anonymous";
+            outImg.onload = () => {
+              const c = document.createElement("canvas");
+              c.width = outImg.naturalWidth;
+              c.height = outImg.naturalHeight;
+              c.getContext("2d").drawImage(outImg, 0, 0);
+              resultCanvas = c;
+              showAfter(c);
+              meterSet(
+                "proc",
+                100,
+                "selesai: " + c.width + "×" + c.height + " px",
+                "ok",
+              );
+            };
+            outImg.onerror = () =>
+              meterSet("proc", 0, "gagal memuat hasil dari server AI", "err");
+            outImg.src = data.output_url;
+          } catch (err) {
+            meterSet("proc", 0, "gagal: " + err.message, "err");
+          }
+        });
+
+      document.getElementById("btnDownload").addEventListener("click", () => {
+        if (!resultCanvas) return;
+        const a = document.createElement("a");
+        a.download = "imagepros-hasil.png";
+        a.href = resultCanvas.toDataURL("image/png");
+        a.click();
+      });
+    </script>
+  </body>
+</html>
